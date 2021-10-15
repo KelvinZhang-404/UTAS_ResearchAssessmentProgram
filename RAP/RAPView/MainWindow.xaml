@@ -1,0 +1,234 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ctrl="clr-namespace:RAPWPF.RAPController"
+        xmlns:model="clr-namespace:RAPWPF.RAPModel"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="RAPWPF.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <Window.Resources>
+        <ctrl:ResearcherListController x:Key="researcherListContrller"/>
+        <ObjectDataProvider x:Key="AllResearcherList"
+                            ObjectInstance="{StaticResource researcherListContrller}"
+                            MethodName="GetViewableResearchers"/>
+        <DataTemplate x:Key="ResearcherTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="{Binding Path=Name}" />
+                <Label Grid.Row="0" Grid.Column="1" Content="{Binding Path=ID}" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+
+        <TabControl>
+            <TabItem Header="Researcher">
+                <Grid Background="#FFE5E5E5">
+                    <Grid Margin="10,10,0,10" HorizontalAlignment="Left">
+                        <Label Content="Enter name to search:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="150"/>
+                        <TextBox x:Name="NameTextBox" HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" KeyUp="NameTextBox_KeyUp" Margin="0,27,0,0" GotFocus="NameTextBox_GotFocus"/>
+                        <Label Content="Filter" HorizontalAlignment="Left" Margin="0,52,0,0" VerticalAlignment="Top" Width="150"/>
+                        <ComboBox x:Name="LevelComboBox" HorizontalAlignment="Left" Margin="0,79,0,0" VerticalAlignment="Top" Width="150" Height="21" SelectionChanged="LevelComboBox_SelectionChanged">
+                            <System:String>All</System:String>
+                            <System:String>A</System:String>
+                            <System:String>B</System:String>
+                            <System:String>C</System:String>
+                            <System:String>D</System:String>
+                            <System:String>E</System:String>
+                            <System:String>Students</System:String>
+                        </ComboBox>
+                        <ListBox x:Name="ResearcherListBox" HorizontalAlignment="Left" Margin="0,105,0,0" Width="150" 
+                                 ItemsSource="{Binding Source={StaticResource AllResearcherList}}" SelectionChanged="ResearcherListBox_SelectionChanged"/>
+                    </Grid>
+                    <Border Margin="165,10,10,0" Padding="5" Background="LightYellow" BorderThickness="3,5,3,5" CornerRadius="3" VerticalAlignment="Top">
+                        <StackPanel x:Name="PrimaryDetailsPanel" Visibility="Hidden" Margin="5,5,5,5" DataContext="{Binding Researcher}" Orientation="Horizontal" Height="130" VerticalAlignment="Top">
+                            <Image Source="{Binding Photo}" Width="120" Height="130"/>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Name:" Width="60" Margin="10,0,0,0" FontWeight="Bold"/>
+                                    <Label Content="{Binding Name}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Job Title:" Width="60" Margin="10,0,0,0" FontWeight="Bold"/>
+                                    <Label Content="{Binding JobTitle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Unit:" Width="60" Margin="10,0,0,0" FontWeight="Bold"/>
+                                    <Label Content="{Binding Unit}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Campus:" Width="60" Margin="10,0,0,0" FontWeight="Bold"/>
+                                    <Label Content="{Binding Campus}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Email:" Width="60" Margin="10,0,0,0" FontWeight="Bold"/>
+                                    <Label Content="{Binding Email}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <TabControl x:Name="PersonalDetailsTabCtrl" Margin="165,175,10,10" Visibility="Hidden">
+                        <TabItem Header="Detail" Name="DetailTab">
+                            <Border  Padding="5" Background="LightYellow" BorderThickness="3,5,3,5" CornerRadius="3">
+
+                                <StackPanel x:Name="PersonalDetailsPanel" DataContext="{Binding Researcher}">
+                                    <StackPanel x:Name="StudentListPanel" Visibility="Collapsed">
+                                        <Button Content="Go Back" Click="Button_Click"></Button>
+                                        <DataGrid x:Name="tblStudents" AutoGenerateColumns="False" IsReadOnly="True">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="50"/>
+                                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </StackPanel>
+                                    <StackPanel x:Name="CumulativeCountsPanel" Visibility="Collapsed">
+                                        <Button Content="Go Back" Click="Button_Click"></Button>
+                                        <DataGrid x:Name="tblCumulativeCounts" AutoGenerateColumns="False" IsReadOnly="True">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Year" Binding="{Binding Item1}" Width="50"/>
+                                                <DataGridTextColumn Header="Number of Publications" Binding="{Binding Item2}" Width="*"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </StackPanel>
+                                    <StackPanel x:Name="OtherDetailsPanel" Visibility="Hidden">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="Current Job Title:" FontWeight="Bold"/>
+                                            <Label Content="{Binding JobTitle}" Width="120"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="Commenced with insitution:" FontWeight="Bold"/>
+                                            <Label Content="{Binding CommencedIns}" Width="120"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="Commenced current position:" FontWeight="Bold"/>
+                                            <Label Content="{Binding CommencedPos}" ContentStringFormat="{}{0:dd/MM/yyyy}" Width="120"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="Tenue:" FontWeight="Bold"/>
+                                            <Label Content="{Binding Tenure}" ContentStringFormat="{}{0} Years" Width="120"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="Publications:" FontWeight="Bold"/>
+                                            <Label Content="{Binding PublicationCount}" Width="120"/>
+                                            <Button x:Name="CumulativeBtn" Content="See cumulative publications" Width="160" Click="CumulativeBtn_Click"/>
+
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="3-year Average:" FontWeight="Bold"/>
+                                            <Label Content="{Binding ThreeYearAvg}" ContentStringFormat="{}{0}%" Width="120"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="Performance:" FontWeight="Bold"/>
+                                            <Label Content="{Binding Performance}" Width="120"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="Supervision:" FontWeight="Bold"/>
+                                            <Label Content="{Binding Supervisions}" Width="120"/>
+                                            <Button x:Name="SupervisonBtn" Content="See all students' names" Width="160" Margin="0" Click="SupervisonBtn_Click"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="Degree:" FontWeight="Bold"/>
+                                            <Label Content="{Binding Degree}" Width="120"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Width="200" Content="Supervisor:" FontWeight="Bold"/>
+                                            <Label Content="{Binding Supervisor}" Width="120"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                        </TabItem>
+                        <TabItem Header="Publication">
+                            <Border Padding="5" Background="LightYellow" BorderThickness="3,5,3,5" CornerRadius="3">
+                                <StackPanel x:Name="PersonalPublicationPanel" DataContext="{Binding Researcher}" Orientation="Vertical" HorizontalAlignment="Center" Margin="2,0" Width="585">
+                                    <StackPanel x:Name="PubListPanel" Visibility="Visible">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Total Publication:" FontWeight="Bold"/>
+                                            <Label Width="50" Content="{Binding PublicationCount}"/>
+                                            <Label Width="120" Content="Specify a year range:" FontWeight="Bold"/>
+                                            <ComboBox x:Name="FromComboBox" Width="70"/>
+                                            <Label Content="to"/>
+                                            <ComboBox x:Name="ToComboBox" Width="70"/>
+                                            <Button x:Name="SearchRangeBtn" Content="Search" Width="75" Margin="10,0,0,0" Click="SearchRangeBtn_Click"/>
+                                        </StackPanel>
+                                        <ScrollViewer Height="284" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                            <DataGrid x:Name="tblPublications" AutoGenerateColumns="False" IsReadOnly="True" MouseLeftButtonUp="TblPublications_MouseLeftButtonUp">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Publication Year" Binding="{Binding Year}" Width="100"/>
+                                                    <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </ScrollViewer>
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="PubDetailsPanel" Visibility="Collapsed" DataContext="{Binding Publication}" Width="550">
+                                        <Button Content="Go Back" Click="Button_Click_1"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="DOI:" Width="100"/>
+                                            <Label Content="{Binding DOI}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Title:" Width="100"/>
+                                            <TextBox Text="{Binding Title}" TextWrapping="Wrap" Width="450" IsReadOnly="True"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Authors:" Width="100"/>
+                                            <Label Content="{Binding Authors}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Publication year:" Width="100"/>
+                                            <Label Content="{Binding Year}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Type:" Width="100"/>
+                                            <Label Content="{Binding Mode}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Cite as:" Width="100"/>
+                                            <TextBox Text="{Binding CiteAs}" TextWrapping="Wrap" Width="450" IsReadOnly="True"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Available date:" Width="100"/>
+                                            <Label Content="{Binding Certified}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Age:" Width="100"/>
+                                            <Label Content="{Binding Age}" ContentStringFormat="{}{0} Days"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </TabItem>
+                        <TabItem x:Name="PositionTab" Header="Position History">
+                            <Border  Padding="5" Background="LightYellow" BorderThickness="3,5,3,5" CornerRadius="3">
+                                <StackPanel x:Name="PositionHistoryPanel" DataContext="{Binding Researcher}">
+                                    <ScrollViewer Height="284" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                        <DataGrid x:Name="tblPositions" AutoGenerateColumns="False" IsReadOnly="True">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Position" Binding="{Binding Level}" Width="100"/>
+                                                <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=\{0:MM/dd/yyyy\}}" Width="*"/>
+                                                <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=\{0:MM/dd/yyyy\}}" Width="*"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </ScrollViewer>
+                                </StackPanel>
+                            </Border>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Report">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

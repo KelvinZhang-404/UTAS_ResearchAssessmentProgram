@@ -1,0 +1,6 @@
+C:\Users\xi_jean\Desktop\VSProjects\KIT506_Ltn_Th1000_7\FinalDraft\RAP\obj\Debug\RAPView\App.g.cs
+C:\Users\xi_jean\Desktop\VSProjects\KIT506_Ltn_Th1000_7\FinalDraft\RAP\obj\Debug\RAPView\MainWindow.g.cs
+C:\Users\xi_jean\Desktop\VSProjects\KIT506_Ltn_Th1000_7\FinalDraft\RAP\obj\Debug\RAPView\MenuControl.g.cs
+C:\Users\xi_jean\Desktop\VSProjects\KIT506_Ltn_Th1000_7\FinalDraft\RAP\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\xi_jean\Desktop\VSProjects\KIT506_Ltn_Th1000_7\FinalDraft\RAP\obj\Debug\RAP_MarkupCompile.cache
+C:\Users\xi_jean\Desktop\VSProjects\KIT506_Ltn_Th1000_7\FinalDraft\RAP\obj\Debug\RAP_MarkupCompile.lref
